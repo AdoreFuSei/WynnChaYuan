@@ -35,6 +35,74 @@ public final class TooltipPanel {
     private TooltipPanel() {}
 
     /**
+     * 同一份 tooltip 的翻譯結果，按內容記住。
+     *
+     * <h2>為什麼要有</h2>
+     * 懸停期間遊戲<b>每一幀</b>都觸發一次 tooltip 事件，而 {@link #translateLines}
+     * 要對整份內容做整段查表（從 maxBlockLines 一路試到兩行）、逐行查表、
+     * 段落判定與排版。一份二三十行的裝備 tooltip 每幀重算一次，背包與箱子裡
+     * 滑鼠停著不動也在持續燒 CPU，掃過之處幀率直接掉一截。
+     * 同一份內容的翻譯結果其實不會變，記住就好。
+     *
+     * <h2>什麼時候作廢</h2>
+     * <ul>
+     *   <li>內容變了（鑑定百分比、藥水倒數）——key 對不上，自動重翻。</li>
+     *   <li>語料重載（換語言、背景同步更新）——{@code generation} 對不上，
+     *       那一筆直接失效。</li>
+     *   <li>物品名稱顯示模式（Shift 暫看原文、F6 的三段開關）——
+     *       {@code namesWithOriginal} 與 {@code translateNames} 跟著結果一起記。</li>
+     * </ul>
+     *
+     * <p>LRU 上限 {@value #CACHE_LIMIT} 份：倉庫頁一頁幾十格，掃過兩三頁
+     * 舊的就自然淘汰，不會無限長大。
+     */
+    private static final int CACHE_LIMIT = 256;
+
+    private static final java.util.Map<List<Component>, CachedLines> LINES_CACHE =
+            new java.util.LinkedHashMap<>(64, 0.75f, true) {
+                @Override
+                protected boolean removeEldestEntry(
+                        java.util.Map.Entry<List<Component>, CachedLines> eldest) {
+                    return size() > CACHE_LIMIT;
+                }
+            };
+
+    /** 一次翻譯的結果，連同當時的語料狀態。 */
+    private record CachedLines(int generation, boolean namesWithOriginal,
+                               boolean translateNames, List<Component> lines) {}
+
+    /**
+     * {@link #translateLines} 的快取版：同一份內容直接回上一次的結果。
+     *
+     * <p>回傳的清單兩個呼叫端都只讀（面板拿去量寬度與畫、就地取代整份
+     * 交給事件），所以快取裡那一份直接共用，不複製。
+     *
+     * <p>「一行都沒翻到」的空結果也記——沒翻到的物品恰恰是查表查到底的
+     * 那些，不記的話它們每幀都在白跑。
+     */
+    static List<Component> translateLinesCached(List<Component> tooltip,
+                                                TranslationStore store) {
+        if (tooltip == null || tooltip.isEmpty() || store == null) {
+            return List.of();
+        }
+        List<Component> key = List.copyOf(tooltip);
+        synchronized (LINES_CACHE) {
+            CachedLines hit = LINES_CACHE.get(key);
+            if (hit != null && hit.generation() == store.generation()
+                    && hit.namesWithOriginal() == store.namesWithOriginal()
+                    && hit.translateNames() == store.translatesNames()) {
+                return hit.lines();
+            }
+        }
+        List<Component> out = translateLines(tooltip, store);
+        synchronized (LINES_CACHE) {
+            LINES_CACHE.put(key, new CachedLines(store.generation(),
+                    store.namesWithOriginal(), store.translatesNames(), out));
+        }
+        return out;
+    }
+
+    /**
      * 畫出翻譯面板。
      *
      * @param tooltip 原始 tooltip 的每一行（我們只讀不改）
@@ -47,7 +115,7 @@ public final class TooltipPanel {
         // 別的模組加進清單、但 Wynntils 沒有畫出來的區塊要先拿掉，
         // 否則面板會比原文多出好幾行，看起來像我們憑空生了內容。
         tooltip = ThirdPartySections.strip(tooltip);
-        List<Component> lines = translateLines(tooltip, store);
+        List<Component> lines = translateLinesCached(tooltip, store);
         // 只在物品換了才記一次，否則每幀都記會灌爆計數
         if (!tooltip.equals(lastDiagnosed)) {
             lastDiagnosed = List.copyOf(tooltip);
@@ -875,7 +943,7 @@ public final class TooltipPanel {
         // 「退回原文」是這個方法自己的承諾，不該靠呼叫端剛好寫對。
         // 例外照樣記進 error-debug，否則又回到「只知道沒翻、不知道為什麼」。
         try {
-            List<Component> translated = translateLines(tooltip, store);
+            List<Component> translated = translateLinesCached(tooltip, store);
             return translated.isEmpty() ? List.of() : translated;
         } catch (RuntimeException e) {
             Component first = tooltip == null || tooltip.isEmpty() ? null : tooltip.get(0);

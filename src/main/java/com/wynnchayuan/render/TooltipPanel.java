@@ -15,7 +15,9 @@ import net.minecraft.util.FormattedCharSequence;
 import org.joml.Vector2i;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 在原始 tooltip 旁邊畫一個翻譯面板。
@@ -58,11 +60,11 @@ public final class TooltipPanel {
      */
     private static final int CACHE_LIMIT = 256;
 
-    private static final java.util.Map<List<Component>, CachedLines> LINES_CACHE =
-            new java.util.LinkedHashMap<>(64, 0.75f, true) {
+    private static final Map<List<Component>, CachedLines> LINES_CACHE =
+            new LinkedHashMap<>(64, 0.75f, true) {
                 @Override
                 protected boolean removeEldestEntry(
-                        java.util.Map.Entry<List<Component>, CachedLines> eldest) {
+                        Map.Entry<List<Component>, CachedLines> eldest) {
                     return size() > CACHE_LIMIT;
                 }
             };
@@ -74,8 +76,17 @@ public final class TooltipPanel {
     /**
      * {@link #translateLines} 的快取版：同一份內容直接回上一次的結果。
      *
-     * <p>回傳的清單兩個呼叫端都只讀（面板拿去量寬度與畫、就地取代整份
-     * 交給事件），所以快取裡那一份直接共用，不複製。
+     * <p>「記住的」與「交出去的」分開：快取裡那一份是<b>不可變</b>的
+     * （{@code List.copyOf}），回傳給呼叫端的永遠是複本。
+     * 就地取代模式會把結果交給 Wynntils 的事件（{@code event.setTooltips}），
+     * 之後還有別的模組的 listener 會跑——往 tooltip 清單後面加行是模組
+     * 最常做的事，而它們加到的如果是我們快取裡那一份，同一件物品下一次
+     * 懸停就會多出那幾行，愈看愈長。那種 bug 只在特定模組組合下出現，
+     * 而且症狀看起來跟快取八竿子打不著，會查很久。
+     *
+     * <p>一份二三十個參考的陣列複製，跟省下來的整段查表比起來可以忽略。
+     * 不回 {@code List.copyOf} 讓誤用當場炸：炸的會是<b>別人模組</b>的
+     * listener，不是我們的程式，那比較糟。
      *
      * <p>「一行都沒翻到」的空結果也記——沒翻到的物品恰恰是查表查到底的
      * 那些，不記的話它們每幀都在白跑。
@@ -91,15 +102,15 @@ public final class TooltipPanel {
             if (hit != null && hit.generation() == store.generation()
                     && hit.namesWithOriginal() == store.namesWithOriginal()
                     && hit.translateNames() == store.translatesNames()) {
-                return hit.lines();
+                return new ArrayList<>(hit.lines());
             }
         }
-        List<Component> out = translateLines(tooltip, store);
+        List<Component> out = List.copyOf(translateLines(tooltip, store));
         synchronized (LINES_CACHE) {
             LINES_CACHE.put(key, new CachedLines(store.generation(),
                     store.namesWithOriginal(), store.translatesNames(), out));
         }
-        return out;
+        return new ArrayList<>(out);
     }
 
     /**

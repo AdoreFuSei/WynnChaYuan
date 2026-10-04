@@ -1,8 +1,8 @@
 {
  "_meta": {
   "quest": "Mushroom Man",
-  "count": 80,
-  "translated": 80,
+  "count": 82,
+  "translated": 82,
   "note": "一个任务一个文件。改完跑 tools/quest-bundle.py。"
  },
  "entries": {
@@ -352,6 +352,16 @@
    "speaker": "Tasim",
    "source": "wiki"
   },
+  "Mushroom Man#040": {
+   "src": "Th-thank you soldiers! Th-that was-... I mean. I-it was f-fine, I g-... guess.",
+   "dst": "谢、谢谢你们，士兵！那真是——我是说。还、还可以啦，我、我想。",
+   "role": "desc",
+   "kind": "dialogue",
+   "quest": "Mushroom Man",
+   "stage": "Stage 4",
+   "speaker": "Yahya",
+   "source": "wiki"
+  },
   "Mushroom Man#041": {
    "src": "...O-oh. Do I n-need to pay you... now? Heh. Is- is [{~} Emeralds] fine with y-you..?",
    "dst": "……噢、噢。我现在……得付你们钱吗？嘿。[{~} 绿宝石] 你、你们觉得可以吗……？",
@@ -490,6 +500,16 @@
    "quest": "Mushroom Man",
    "stage": "Stage 5",
    "speaker": "Tasim",
+   "source": "wiki"
+  },
+  "Mushroom Man#056": {
+   "src": "Travel to {p} to request the help of their military at [{~}, {~}, -{~}].",
+   "dst": "前往 {p}，到 [{~}, {~}, -{~}] 请求他们的军队援助。",
+   "role": "desc",
+   "kind": "objective",
+   "quest": "Mushroom Man",
+   "stage": "Stage 6",
+   "speaker": "",
    "source": "wiki"
   },
   "Mushroom Man#057": {
@@ -684,7 +704,7 @@
   },
   "Mushroom Man#078": {
    "src": "Bad news, indeed. Very well, we will make preparations. For the time being, the two of you should rest and hone your skills. Captain Ragon here in the barracks would gladly offer some training.",
-   "dst": "确实是坏消息。好吧，我们会做好准备。目前你们俩应该休息，磨练技巧。这里兵营的 Ragon 上尉很乐意给你们一些训练。",
+   "dst": "确实是坏消息。好吧，我们会做好准备。目前你们俩应该休息，磨练技巧。这里兵营的 Ragon 队长很乐意给你们一些训练。",
    "role": "desc",
    "kind": "dialogue",
    "quest": "Mushroom Man",
@@ -764,7 +784,7 @@
   },
   "Mushroom Man#087": {
    "src": "Now, to business. We've already begun planning for our assault on the spiders, but we'll need more well-trained soldiers. Captain Ragon here should be able to help you hone your skills.",
-   "dst": "好了，说正事。我们已经开始计划突袭蜘蛛，但还需要更多训练有素的士兵。这里的 Ragon 上尉应该能帮你磨练技巧。",
+   "dst": "好了，说正事。我们已经开始计划突袭蜘蛛，但还需要更多训练有素的士兵。这里的 Ragon 队长应该能帮你磨练技巧。",
    "role": "desc",
    "kind": "dialogue",
    "quest": "Mushroom Man",

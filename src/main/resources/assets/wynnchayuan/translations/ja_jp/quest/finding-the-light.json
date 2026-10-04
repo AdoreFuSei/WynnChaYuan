@@ -1,8 +1,8 @@
 {
  "_meta": {
   "quest": "Finding the Light",
-  "count": 154,
-  "translated": 154,
+  "count": 156,
+  "translated": 156,
   "note": "一個任務一個檔。改完跑 tools/quest-bundle.py。"
  },
  "entries": {
@@ -756,6 +756,16 @@
    "speaker": "Lari",
    "source": "wiki"
   },
+  "Finding the Light#075": {
+   "src": "Find the Church Library in the city of {p} at [-{~}, {~}, -{~}].",
+   "dst": "{p} の街の [-{~1}, {~2}, -{~3}] にある教会図書館を探す。",
+   "role": "desc",
+   "kind": "objective",
+   "quest": "Finding the Light",
+   "stage": "Stage 3",
+   "speaker": "",
+   "source": "wiki"
+  },
   "Finding the Light#076": {
    "src": "Find a way up to the church bell at the top of the church.",
    "dst": "教会の頂上にある鐘まで登る方法を探す。",
@@ -1108,7 +1118,7 @@
   },
   "Finding the Light#112": {
    "src": "You must seek the Canned Abis plant, then. It rests within a cavern shaded by giant fern leaves.",
-   "dst": "ならば Canned Abis という植物を探すのだ。巨大なシダの葉に覆われた洞窟の中にある。",
+   "dst": "ならば缶詰の Abis という植物を探すのだ。巨大なシダの葉に覆われた洞窟の中にある。",
    "role": "desc",
    "kind": "dialogue",
    "quest": "Finding the Light",
@@ -1248,7 +1258,7 @@
   },
   "Finding the Light#126": {
    "src": "There is, unfortunately, no right to this. There is simply necessity- And there, you must push her to her limits. Seek the cave of the Canned Abis.",
-   "dst": "残念ながら、ここに正しさはない。あるのは必要だけだ。そこで彼女を限界まで追い込むのだ。Canned Abis の洞窟を探せ。",
+   "dst": "残念ながら、ここに正しさはない。あるのは必要だけだ。そこで彼女を限界まで追い込むのだ。缶詰の Abis の洞窟を探せ。",
    "role": "desc",
    "kind": "dialogue",
    "quest": "Finding the Light",
@@ -1268,7 +1278,7 @@
   },
   "Finding the Light#128": {
    "src": "Find the Canned Abis cave at [-{~}, {~}, -{~}]",
-   "dst": "[-{~}, {~}, -{~}] で Canned Abis の洞窟を見つける",
+   "dst": "[-{~}, {~}, -{~}] で缶詰の Abis の洞窟を見つける",
    "role": "desc",
    "kind": "objective",
    "quest": "Finding the Light",
@@ -1283,6 +1293,16 @@
    "kind": "objective",
    "quest": "Finding the Light",
    "stage": "Stage 13",
+   "speaker": "",
+   "source": "wiki"
+  },
+  "Finding the Light#130": {
+   "src": "Return to the Tree at [-{~}, {~}, -{~}].",
+   "dst": "[-{~}, {~}, -{~}] の木へ戻る。",
+   "role": "desc",
+   "kind": "objective",
+   "quest": "Finding the Light",
+   "stage": "Stage 14",
    "speaker": "",
    "source": "wiki"
   },
@@ -1338,7 +1358,7 @@
   },
   "Finding the Light#137": {
    "src": "...wait... You... You have Canned Abis on you!! Where did you get that?!",
-   "dst": "…待って…あなた…Canned Abis を持ってる！！どこで手に入れたの？！",
+   "dst": "…待って…あなた…缶詰の Abis を持ってる！！どこで手に入れたの？！",
    "role": "desc",
    "kind": "dialogue",
    "quest": "Finding the Light",

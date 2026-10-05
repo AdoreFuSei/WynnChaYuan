@@ -3,8 +3,8 @@
   "domain": "gear-accessory",
   "lang": "zh_cn",
   "generated": "2026-08-19T12:14:19+00:00",
-  "count": 1144,
-  "translated": 1092,
+  "count": 1145,
+  "translated": 1093,
   "note": "只需填 dst。src 里的材质包图标与数字在抽取阶段就已经排除了。"
  },
  "entries": {
@@ -10742,7 +10742,7 @@
   },
   "gear-accessory#1140": {
    "src": "{p} Banner",
-   "dst": "{p}旗帜",
+   "dst": "{p} 旗帜",
    "role": "name",
    "kind": "term",
    "ctx": [
@@ -10752,7 +10752,7 @@
   },
   "gear-accessory#1141": {
    "src": "{p} Brand",
-   "dst": "{p}烙印",
+   "dst": "{p} 烙印",
    "role": "name",
    "kind": "term",
    "ctx": [
@@ -10762,7 +10762,7 @@
   },
   "gear-accessory#1142": {
    "src": "{p} Crest",
-   "dst": "{p}纹章",
+   "dst": "{p} 纹章",
    "role": "name",
    "kind": "term",
    "ctx": [
@@ -10772,13 +10772,22 @@
   },
   "gear-accessory#1143": {
    "src": "{p} Kid Badge",
-   "dst": "{p}儿童徽章",
+   "dst": "{p} 儿童徽章",
    "role": "name",
    "kind": "term",
    "ctx": [
     "accessory/accessory"
    ],
    "_raw": "Troms Kid Badge"
+  },
+  "gear-accessory#1144": {
+   "src": "Moonshine",
+   "dst": "月辉",
+   "role": "name",
+   "kind": "term",
+   "ctx": [
+    "accessory/accessory"
+   ]
   }
  }
 }
